@@ -3,6 +3,7 @@
 import { useEffect,useState } from "react";
 import Container from "@/components/Container/Container";
 import Card from "@/components/Card/Card";
+import Cart from "@/components/Cart/Cart";
 import { StaticImageData } from "next/image";
 
 type ProductsType = {
@@ -33,10 +34,10 @@ export default function Home() {
   return (
     <div className="w-full h-full">
       <Container>
-        <main className="grid-templeate gap-6">
-          <section className="w-90%">
+        <main className="grid-templeate gap-9">
+          <section className="w-100%">
             <h1 className="text-4xl font-bold mb-5">Desserts</h1>
-            <div className="grid grid-cols-3 gap-0">
+            <div className="columns-3 gap-0">
               {products.map((product) => {
                 return <Card
                   key={product.name}
@@ -48,7 +49,9 @@ export default function Home() {
               })}
             </div>
           </section>
-          <aside></aside>
+          <aside>
+            <Cart />
+          </aside>
         </main>
       </Container>
     </div>

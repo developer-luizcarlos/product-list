@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${ RedHatText } bg-rose-50`}
+        className={`${ RedHatText } bg-rose-100`}
       >
         <ContextComponent>
           {children}

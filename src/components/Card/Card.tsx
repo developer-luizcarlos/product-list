@@ -44,8 +44,8 @@ export default function Card({ image,name,category,price }: Props) {
 
 
   return (
-    <article className="flex flex-col gap-7 w-64 max-h-80 mb-11">
-      <div className="w-full h-52 rounded-lg relative">
+    <article className="flex flex-col gap-7 w-[200px] h-80 mb-11">
+      <div className="w-full h-60 rounded-lg relative">
         <img src={image} alt="" className="w-full h-full object-cover rounded-lg" />
         <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-44 h-9">
           <button
