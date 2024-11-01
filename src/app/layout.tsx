@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import RedHatText from "@/lib/font";
+import ContextComponent from "@/context/Context";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,9 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${ RedHatText }`}
+        className={`${ RedHatText } bg-rose-50`}
       >
-        {children}
+        <ContextComponent>
+          {children}
+        </ContextComponent>
       </body>
     </html>
   );
