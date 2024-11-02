@@ -29,13 +29,12 @@ const setQuantity = (state: QuantityType,action: Action): QuantityType => {
     case "DECREMENT":
       return state.count > 0 ? { ...state,count: state.count - 1 } : state;
     case "RESET":
-      return {
-        count: state.count = 1
-      };
+      return { ...state,count: 1 };
     default:
       return state;
   }
 };
+
 
 export default function Card({ image,name,category,price }: Props) {
   const { state,dispatch } = useContext(Context)!;
@@ -57,18 +56,22 @@ export default function Card({ image,name,category,price }: Props) {
     handleQuantity({ type: "RESET" });
   };
 
-  const incrementProductsQuantity = () => {
+  const incrementProductsQuantity = (productName: string) => {
     handleQuantity({ type: "INCREMENT" });
+    dispatch({ type: "EDIT",name: productName,newQuantity: quantity.count + 1,price: price });
   };
 
-  const decrementProductsQuantity = () => {
+  const decrementProductsQuantity = (productName: string) => {
     handleQuantity({ type: "DECREMENT" });
-    if(quantity.count > 0) {
+    if(quantity.count > 1) {
+      dispatch({ type: "EDIT",name: productName,newQuantity: quantity.count - 1,price: price });
       addCartRef.current!.style.display = "none";
       selectProductQuantityRef.current!.style.display = "flex";
     } else {
+      dispatch({ type: "DELETE",payload: name });
       addCartRef.current!.style.display = "flex";
       selectProductQuantityRef.current!.style.display = "none";
+      handleQuantity({ type: "RESET" });
     }
   };
 
@@ -92,7 +95,7 @@ export default function Card({ image,name,category,price }: Props) {
             ref={selectProductQuantityRef}
             className="bg-red h-full hidden w-full rounded-xl items-center justify-between gap-1 text-rose-900 font-medium px-4">
             <button
-              onClick={() => { decrementProductsQuantity(); }}
+              onClick={() => { decrementProductsQuantity(name); }}
               className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer">
               <img src="./assets/images/icon-decrement-quantity.svg" alt="" />
             </button>
@@ -100,7 +103,7 @@ export default function Card({ image,name,category,price }: Props) {
               {quantity.count}
             </span>
             <button
-              onClick={() => { incrementProductsQuantity(); }}
+              onClick={() => { incrementProductsQuantity(name); }}
               className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer">
               <img src="./assets/images/icon-increment-quantity.svg" alt="" />
             </button>
