@@ -7,6 +7,7 @@ import Cart from "@/components/Cart/Cart";
 import { StaticImageData } from "next/image";
 
 type ProductsType = {
+  id: number;
   image: { desktop: StaticImageData; };
   name: string;
   category: string;
@@ -41,6 +42,7 @@ export default function Home() {
               {products.map((product) => {
                 return <Card
                   key={product.name}
+                  id={product.id}
                   image={(product.image.desktop).toString()}
                   name={product.name}
                   category={product.category}

@@ -2,10 +2,12 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useRef,useReducer } from "react";
+import { useRef,useReducer,useContext } from "react";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
+import { Context } from "@/context/Context";
 
 interface Props {
+  id: number;
   image: string;
   name: string;
   category: string;
@@ -16,9 +18,9 @@ type QuantityType = {
   count: number;
 };
 
-type Action = | { type: "INCREMENT"; } | { type: "DECREMENT"; };
+type Action = | { type: "INCREMENT"; } | { type: "DECREMENT"; } | { type: "RESET"; };
 
-let initialQuantity: QuantityType = { count: 0 };
+let initialQuantity: QuantityType = { count: 1 };
 
 const setQuantity = (state: QuantityType,action: Action): QuantityType => {
   switch(action.type) {
@@ -26,20 +28,48 @@ const setQuantity = (state: QuantityType,action: Action): QuantityType => {
       return { ...state,count: state.count + 1 };
     case "DECREMENT":
       return state.count > 0 ? { ...state,count: state.count - 1 } : state;
+    case "RESET":
+      return {
+        count: state.count = 1
+      };
     default:
       return state;
   }
 };
 
 export default function Card({ image,name,category,price }: Props) {
-  const [quantity,dispatch] = useReducer(setQuantity,initialQuantity);
+  const { state,dispatch } = useContext(Context)!;
+
+  const [quantity,handleQuantity] = useReducer(setQuantity,initialQuantity);
 
   const addCartRef = useRef<HTMLButtonElement | null>(null);
   const selectProductQuantityRef = useRef<HTMLDivElement | null>(null);
 
-  const addProtductsToCart = () => {
+  const addProtductsToCart = (productName: string,productPrice: number) => {
     addCartRef.current!.style.display = "none";
     selectProductQuantityRef.current!.style.display = "flex";
+
+    const existingProduct = state.find(item => item.productName === productName);
+
+    if(!existingProduct) {
+      dispatch({ type: "ADD",productID: state.length + 1,productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
+    }
+    handleQuantity({ type: "RESET" });
+  };
+
+  const incrementProductsQuantity = () => {
+    handleQuantity({ type: "INCREMENT" });
+  };
+
+  const decrementProductsQuantity = () => {
+    handleQuantity({ type: "DECREMENT" });
+    if(quantity.count > 0) {
+      addCartRef.current!.style.display = "none";
+      selectProductQuantityRef.current!.style.display = "flex";
+    } else {
+      addCartRef.current!.style.display = "flex";
+      selectProductQuantityRef.current!.style.display = "none";
+    }
   };
 
 
@@ -51,7 +81,7 @@ export default function Card({ image,name,category,price }: Props) {
           <button
             ref={addCartRef}
             onClick={() => {
-              addProtductsToCart();
+              addProtductsToCart(name,price);
             }}
             className="bg-rose-100 h-full w-full rounded-xl flex items-center justify-center gap-1 border-rose-300 border-[1px] text-rose-900 font-medium cursor-pointer"
           >
@@ -62,7 +92,7 @@ export default function Card({ image,name,category,price }: Props) {
             ref={selectProductQuantityRef}
             className="bg-red h-full hidden w-full rounded-xl items-center justify-between gap-1 text-rose-900 font-medium px-4">
             <button
-              onClick={() => { dispatch({ type: "DECREMENT" }); }}
+              onClick={() => { decrementProductsQuantity(); }}
               className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer">
               <img src="./assets/images/icon-decrement-quantity.svg" alt="" />
             </button>
@@ -70,7 +100,7 @@ export default function Card({ image,name,category,price }: Props) {
               {quantity.count}
             </span>
             <button
-              onClick={() => { dispatch({ type: "INCREMENT" }); }}
+              onClick={() => { incrementProductsQuantity(); }}
               className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer">
               <img src="./assets/images/icon-increment-quantity.svg" alt="" />
             </button>
