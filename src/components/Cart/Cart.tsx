@@ -1,6 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+/*
+  This is the cart component, show all the cart informations, like the amount to be paid an the products that were inserted here.
+*/
+
 import { useContext } from "react";
 import { Context } from "@/context/Context";
 import ProductOnCart from "./ProductOnCart/ProductOnCart";

@@ -1,6 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+/*
+  This is a component that represents each element that indicates all of the products avaliable in the cart.
+  The only handle function used here is to delete an items from the cart.
+*/
+
 import { useContext } from "react";
 import { Context } from "@/context/Context";
 

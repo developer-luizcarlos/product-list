@@ -2,6 +2,7 @@
 
 import { createContext,ReactNode,useReducer } from "react";
 
+// defines the structure that the state may have
 type State = {
   productID: number;
   productName: string;
@@ -10,6 +11,7 @@ type State = {
   productTotal: number;
 };
 
+// defines the different actions that the reducer function will have
 type Action =
   |
   {
@@ -32,6 +34,7 @@ type Action =
     payload: string;
   };
 
+// the initial and temporary first product avaliable just for tests. It should be exclude before the deploy
 const initialProductsInCart: State[] = [
   {
     productID: 1,
@@ -42,7 +45,10 @@ const initialProductsInCart: State[] = [
   }
 ];
 
-const reducer = (state: State[],action: Action) => {
+/** This function is a member of the useReducer management. Here are avaliables all the possibilities to handle the state
+ * We can add new products to the cart, edit their quantity in the cart and the amount to be paid and, also, delete it
+ */
+function reducer(state: State[],action: Action) {
   switch(action.type) {
     case "ADD":
       return [
@@ -67,6 +73,7 @@ const reducer = (state: State[],action: Action) => {
       return state.filter(item => item.productName != action.payload);
   }
 };
+
 type ContextType = {
   state: State[],
   dispatch: React.Dispatch<Action>;
@@ -78,6 +85,7 @@ export const Context = createContext<ContextType | null>(null);
 export default function ContextComponent({ children }: { children: ReactNode; }) {
   const [state,dispatch] = useReducer(reducer,initialProductsInCart);
 
+  // this is the feature implemented to get the amount to be paid for all the products in the cart
   const totalAmount = state.reduce((previous: number,item: { productTotal: number; }) => {
     return previous + item.productTotal;
   },0);

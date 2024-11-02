@@ -20,9 +20,9 @@ type QuantityType = {
 
 type Action = | { type: "INCREMENT"; } | { type: "DECREMENT"; } | { type: "RESET"; };
 
-let initialQuantity: QuantityType = { count: 1 };
+const initialQuantity: QuantityType = { count: 1 };
 
-const setQuantity = (state: QuantityType,action: Action): QuantityType => {
+function setQuantity(state: QuantityType,action: Action): QuantityType {
   switch(action.type) {
     case "INCREMENT":
       return { ...state,count: state.count + 1 };
@@ -44,35 +44,51 @@ export default function Card({ image,name,category,price }: Props) {
   const addCartRef = useRef<HTMLButtonElement | null>(null);
   const selectProductQuantityRef = useRef<HTMLDivElement | null>(null);
 
-  const addProtductsToCart = (productName: string,productPrice: number) => {
-    addCartRef.current!.style.display = "none";
-    selectProductQuantityRef.current!.style.display = "flex";
-
+  /** add products to the cart based on some conditions */
+  function addProductsToCart(productName: string,productPrice: number) {
+    // search if already exists the product in the cart
     const existingProduct = state.find(item => item.productName === productName);
-
     if(!existingProduct) {
+      // if the product don't exist, it will be create as a new item in the cart
       dispatch({ type: "ADD",productID: state.length + 1,productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
     }
-    handleQuantity({ type: "RESET" });
+    // hide the add button and show the component to select how many items will be insert in the cart
+    addCartRef.current!.style.display = "none";
+    selectProductQuantityRef.current!.style.display = "flex";
+    handleQuantity({ type: "RESET" }); // reset the quantity items value to one
   };
 
-  const incrementProductsQuantity = (productName: string) => {
+  /** This function is responsable to increment the quantity items value in the selector and could add the item
+   * to the cart if it was previously excluded or update your quantity and, for that, change the total amount to be paid
+   */
+  function incrementProductsQuantity(productName: string,productPrice: number) {
+    const existingProduct = state.find(item => item.productName === productName); // verify if the product already exists in the cart
+    if(!existingProduct) {
+      // case products not exists it will be add
+      dispatch({ type: "ADD",productID: state.length + 1,productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
+    }
     handleQuantity({ type: "INCREMENT" });
+    // if the product already exists your quantity will be updated
     dispatch({ type: "EDIT",name: productName,newQuantity: quantity.count + 1,price: price });
   };
 
-  const decrementProductsQuantity = (productName: string) => {
-    handleQuantity({ type: "DECREMENT" });
+  /** decrement the quantity items value in the selector if the value is greater than zero */
+  function decrementProductsQuantity(productName: string,productPrice: number) {
+    const existingProduct = state.find(item => item.productName === productName); // verify if the product already exists in the cart
+    if(!existingProduct) {
+      // case products not exists it will be add
+      dispatch({ type: "ADD",productID: state.length + 1,productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
+    }
     if(quantity.count > 1) {
       dispatch({ type: "EDIT",name: productName,newQuantity: quantity.count - 1,price: price });
-      addCartRef.current!.style.display = "none";
-      selectProductQuantityRef.current!.style.display = "flex";
     } else {
+      // if the quantity items value selected is equals to zero and the product exists in the cart, it will be excluded and the original button to add in the cart will be visible again
       dispatch({ type: "DELETE",payload: name });
       addCartRef.current!.style.display = "flex";
       selectProductQuantityRef.current!.style.display = "none";
-      handleQuantity({ type: "RESET" });
+      handleQuantity({ type: "RESET" }); // reset the quantity items value to zero
     }
+    handleQuantity({ type: "DECREMENT" });
   };
 
 
@@ -84,7 +100,7 @@ export default function Card({ image,name,category,price }: Props) {
           <button
             ref={addCartRef}
             onClick={() => {
-              addProtductsToCart(name,price);
+              addProductsToCart(name,price);
             }}
             className="bg-rose-100 h-full w-full rounded-xl flex items-center justify-center gap-1 border-rose-300 border-[1px] text-rose-900 font-medium cursor-pointer"
           >
@@ -95,7 +111,7 @@ export default function Card({ image,name,category,price }: Props) {
             ref={selectProductQuantityRef}
             className="bg-red h-full hidden w-full rounded-xl items-center justify-between gap-1 text-rose-900 font-medium px-4">
             <button
-              onClick={() => { decrementProductsQuantity(name); }}
+              onClick={() => { decrementProductsQuantity(name,price); }}
               className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer">
               <img src="./assets/images/icon-decrement-quantity.svg" alt="" />
             </button>
@@ -103,7 +119,7 @@ export default function Card({ image,name,category,price }: Props) {
               {quantity.count}
             </span>
             <button
-              onClick={() => { incrementProductsQuantity(name); }}
+              onClick={() => { incrementProductsQuantity(name,price); }}
               className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer">
               <img src="./assets/images/icon-increment-quantity.svg" alt="" />
             </button>
