@@ -1,6 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { useContext } from "react";
+import { Context } from "@/context/Context";
+
 interface Props {
   productName: string;
   productQuantity: number;
@@ -15,6 +18,7 @@ export default function ProductOnCart({
   productTotal,}:
   Props
 ) {
+  const { dispatch } = useContext(Context)!;
   return (
     <div className="w-full flex items-center justify-between border-[0.5px] border-t-0 border-x-0 border-b-rose-100 py-4">
       <div className="flex flex-col gap-1">
@@ -37,8 +41,11 @@ export default function ProductOnCart({
         </div>
       </div>
       <button
+        onClick={() => {
+          dispatch({ type: "DELETE",payload: productName });
+        }}
         className="w-5 h-5 flex items-center justify-center rounded-full border-rose-500 border-[1px] cursor-pointer">
-        <img src="./assets/images/icon-remove-item.svg" alt="" />
+        <img src="./assets/images/icon-remove-item.svg" alt="delete product from the cart icon" />
       </button>
     </div>
   );
