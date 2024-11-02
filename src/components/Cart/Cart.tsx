@@ -6,7 +6,7 @@ import { Context } from "@/context/Context";
 import ProductOnCart from "./ProductOnCart/ProductOnCart";
 
 export default function Cart() {
-  const { state } = useContext(Context)!;
+  const { state,totalAmount } = useContext(Context)!;
 
   return (
     <article className="w-[350px] bg-rose-50 flex flex-col gap-4 p-4 rounded-md">
@@ -27,9 +27,7 @@ export default function Cart() {
         <span
           className="capitalize text-base text-rose-500 font-bold">order total</span>
         <span className="text-2xl text-rose-900 font-extrabold">
-          {state.reduce((previous: number,item: { productTotal: number; }) => {
-            return previous + item.productTotal;
-          },0).toLocaleString('en',{ style: 'currency',currency: 'USD' })}
+          {totalAmount.toLocaleString('en',{ style: 'currency',currency: 'USD' })}
         </span>
       </div>
       <div className="w-full flex items-center justify-center gap-3">
