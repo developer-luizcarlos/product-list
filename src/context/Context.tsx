@@ -35,15 +35,7 @@ type Action =
   };
 
 // the initial and temporary first product avaliable just for tests. It should be exclude before the deploy
-const initialProductsInCart: State[] = [
-  {
-    productID: 1,
-    productName: "Cake",
-    productQuantity: 10,
-    productPrice: 3,
-    productTotal: 30,
-  }
-];
+const initialProductsInCart: State[] = [];
 
 /** This function is a member of the useReducer management. Here are avaliables all the possibilities to handle the state
  * We can add new products to the cart, edit their quantity in the cart and the amount to be paid and, also, delete it
