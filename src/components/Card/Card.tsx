@@ -43,6 +43,7 @@ export default function Card({ image,name,category,price }: Props) {
 
   const addCartRef = useRef<HTMLButtonElement | null>(null);
   const selectProductQuantityRef = useRef<HTMLDivElement | null>(null);
+  const cardImageRef = useRef<HTMLImageElement | null>(null);
 
   /** add products to the cart based on some conditions */
   function addProductsToCart(productName: string,productPrice: number) {
@@ -56,6 +57,7 @@ export default function Card({ image,name,category,price }: Props) {
     addCartRef.current!.style.display = "none";
     selectProductQuantityRef.current!.style.display = "flex";
     handleQuantity({ type: "RESET" }); // reset the quantity items value to one
+    cardImageRef.current!.classList.add("item-selected-border");
   };
 
   /** This function is responsable to increment the quantity items value in the selector and could add the item
@@ -82,10 +84,13 @@ export default function Card({ image,name,category,price }: Props) {
     if(quantity.count > 1) {
       dispatch({ type: "EDIT",name: productName,newQuantity: quantity.count - 1,price: price });
     } else {
-      // if the quantity items value selected is equals to zero and the product exists in the cart, it will be excluded and the original button to add in the cart will be visible again
+      /* 
+      if the quantity items value selected is equals to zero and the product exists in the cart, it will be excluded and the original button to add in the cart will be visible again
+      */
       dispatch({ type: "DELETE",payload: name });
       addCartRef.current!.style.display = "flex";
       selectProductQuantityRef.current!.style.display = "none";
+      cardImageRef.current!.classList.remove("item-selected-border");
       handleQuantity({ type: "RESET" }); // reset the quantity items value to zero
     }
     handleQuantity({ type: "DECREMENT" });
@@ -95,7 +100,7 @@ export default function Card({ image,name,category,price }: Props) {
   return (
     <article className="flex flex-col gap-7 w-[200px] h-80 mb-11">
       <div className="w-full h-60 rounded-lg relative">
-        <img src={image} alt="" className="w-full h-full object-cover rounded-lg" />
+        <img ref={cardImageRef} src={image} alt="" className="w-full h-full object-cover rounded-lg" />
         <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-44 h-9">
           <button
             ref={addCartRef}

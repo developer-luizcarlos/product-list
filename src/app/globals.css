@@ -7,10 +7,16 @@ html {
   width: 100dvw;
   height: 100dvh;
   overflow-x: hidden;
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
 }
 
 .grid-templeate {
   display: grid;
   grid-template-columns: 60% 40%;
   grid-template-rows: 3;
+}
+
+.item-selected-border {
+  border: 2px solid hsl(14, 86%, 42%);
 }
