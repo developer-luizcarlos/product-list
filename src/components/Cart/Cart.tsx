@@ -21,7 +21,7 @@ export default function Cart() {
         <div className="w-full flex flex-col">
           {state.map((item) => {
             return <ProductOnCart
-              key={item.productID}
+              key={item.productName}
               productName={item.productName}
               productPrice={item.productPrice}
               productQuantity={item.productQuantity}

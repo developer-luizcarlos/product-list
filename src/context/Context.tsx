@@ -4,7 +4,6 @@ import { createContext,ReactNode,useReducer } from "react";
 
 // defines the structure that the state may have
 type State = {
-  productID: number;
   productName: string;
   productQuantity: number;
   productPrice: number;
@@ -16,7 +15,6 @@ type Action =
   |
   {
     type: "ADD",
-    productID: number;
     productName: string,
     productQuantity: number,
     productPrice: number,
@@ -46,7 +44,6 @@ function reducer(state: State[],action: Action) {
       return [
         ...state,
         {
-          productID: action.productID,
           productName: action.productName,
           productQuantity: action.productQuantity,
           productPrice: action.productPrice,

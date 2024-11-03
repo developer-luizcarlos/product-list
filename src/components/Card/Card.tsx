@@ -27,9 +27,9 @@ function setQuantity(state: QuantityType,action: Action): QuantityType {
     case "INCREMENT":
       return { ...state,count: state.count + 1 };
     case "DECREMENT":
-      return state.count > 0 ? { ...state,count: state.count - 1 } : state;
+      return state.count > 1 ? { ...state,count: state.count - 1 } : state;
     case "RESET":
-      return { ...state,count: 1 };
+      return { count: 1 };
     default:
       return state;
   }
@@ -51,7 +51,7 @@ export default function Card({ image,name,category,price }: Props) {
     const existingProduct = state.find(item => item.productName === productName);
     if(!existingProduct) {
       // if the product don't exist, it will be create as a new item in the cart
-      dispatch({ type: "ADD",productID: state.length + 1,productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
+      dispatch({ type: "ADD",productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
     }
     // hide the add button and show the component to select how many items will be insert in the cart
     addCartRef.current!.style.display = "none";
@@ -67,7 +67,7 @@ export default function Card({ image,name,category,price }: Props) {
     const existingProduct = state.find(item => item.productName === productName); // verify if the product already exists in the cart
     if(!existingProduct) {
       // case products not exists it will be add
-      dispatch({ type: "ADD",productID: state.length + 1,productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
+      dispatch({ type: "ADD",productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
     }
     handleQuantity({ type: "INCREMENT" });
     // if the product already exists your quantity will be updated
@@ -79,7 +79,7 @@ export default function Card({ image,name,category,price }: Props) {
     const existingProduct = state.find(item => item.productName === productName); // verify if the product already exists in the cart
     if(!existingProduct) {
       // case products not exists it will be add
-      dispatch({ type: "ADD",productID: state.length + 1,productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
+      dispatch({ type: "ADD",productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
     }
     if(quantity.count > 1) {
       dispatch({ type: "EDIT",name: productName,newQuantity: quantity.count - 1,price: price });
@@ -91,7 +91,7 @@ export default function Card({ image,name,category,price }: Props) {
       addCartRef.current!.style.display = "flex";
       selectProductQuantityRef.current!.style.display = "none";
       cardImageRef.current!.classList.remove("item-selected-border");
-      handleQuantity({ type: "RESET" }); // reset the quantity items value to zero
+      handleQuantity({ type: "RESET" }); // reset the quantity items value to one
     }
     handleQuantity({ type: "DECREMENT" });
   };
