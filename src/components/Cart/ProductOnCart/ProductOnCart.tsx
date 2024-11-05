@@ -3,7 +3,7 @@
 
 /*
   This is a component that represents each element that indicates all of the products avaliable in the cart.
-  The only handle function used here is to delete an items from the cart.
+  The only handle function used here is to delete an item from the cart.
 */
 
 import { useContext } from "react";

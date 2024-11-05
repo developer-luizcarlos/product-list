@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
@@ -45,55 +44,50 @@ export default function Card({ image,name,category,price }: Props) {
   const selectProductQuantityRef = useRef<HTMLDivElement | null>(null);
   const cardImageRef = useRef<HTMLImageElement | null>(null);
 
-  /** add products to the cart based on some conditions */
+  function createNewItemOnCart(productName: string,productPrice: number) {
+    dispatch({ type: "ADD",productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
+  }
+
   function addProductsToCart(productName: string,productPrice: number) {
-    // search if already exists the product in the cart
-    const existingProduct = state.find(item => item.productName === productName);
-    if(!existingProduct) {
-      // if the product don't exist, it will be create as a new item in the cart
-      dispatch({ type: "ADD",productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
+    const productAlreadyExistOnCart = state.find(item => item.productName === productName);
+    if(!productAlreadyExistOnCart) {
+      createNewItemOnCart(productName,productPrice);
     }
     // hide the add button and show the component to select how many items will be insert in the cart
     addCartRef.current!.style.display = "none";
     selectProductQuantityRef.current!.style.display = "flex";
-    handleQuantity({ type: "RESET" }); // reset the quantity items value to one
     cardImageRef.current!.classList.add("item-selected-border");
+    handleQuantity({ type: "RESET" });
   };
 
-  /** This function is responsable to increment the quantity items value in the selector and could add the item
-   * to the cart if it was previously excluded or update your quantity and, for that, change the total amount to be paid
-   */
+  function changeProductsQuantity(actionType: Action['type'],productName: string,productPrice: number) {
+    const productAlreadyExistOnCart = state.find(item => item.productName === productName);
+    if(!productAlreadyExistOnCart) {
+      createNewItemOnCart(productName,productPrice);
+    } else {
+      handleQuantity({ type: actionType });
+      dispatch({ type: "EDIT",name: productName,newQuantity: quantity.count + 1,price: price });
+    }
+  }
+
   function incrementProductsQuantity(productName: string,productPrice: number) {
-    const existingProduct = state.find(item => item.productName === productName); // verify if the product already exists in the cart
-    if(!existingProduct) {
-      // case products not exists it will be add
-      dispatch({ type: "ADD",productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
-    }
-    handleQuantity({ type: "INCREMENT" });
-    // if the product already exists your quantity will be updated
-    dispatch({ type: "EDIT",name: productName,newQuantity: quantity.count + 1,price: price });
+    changeProductsQuantity("INCREMENT",productName,productPrice);
   };
 
-  /** decrement the quantity items value in the selector if the value is greater than zero */
   function decrementProductsQuantity(productName: string,productPrice: number) {
-    const existingProduct = state.find(item => item.productName === productName); // verify if the product already exists in the cart
-    if(!existingProduct) {
-      // case products not exists it will be add
-      dispatch({ type: "ADD",productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
-    }
+    changeProductsQuantity("DECREMENT",productName,productPrice);
     if(quantity.count > 1) {
       dispatch({ type: "EDIT",name: productName,newQuantity: quantity.count - 1,price: price });
     } else {
       /* 
-      if the quantity items value selected is equals to zero and the product exists in the cart, it will be excluded and the original button to add in the cart will be visible again
+      if the quantity items value selected is equals to zero and the product exists in the cart, it will be hide and the original button to add in the cart will be visible again
       */
       dispatch({ type: "DELETE",payload: name });
+      handleQuantity({ type: "RESET" }); // reset the quantity items value to one
       addCartRef.current!.style.display = "flex";
       selectProductQuantityRef.current!.style.display = "none";
       cardImageRef.current!.classList.remove("item-selected-border");
-      handleQuantity({ type: "RESET" }); // reset the quantity items value to one
     }
-    handleQuantity({ type: "DECREMENT" });
   };
 
 
@@ -111,7 +105,9 @@ export default function Card({ image,name,category,price }: Props) {
           >
             <span className="text-red">
               <MdOutlineAddShoppingCart />
-            </span> Add to cart</button>
+            </span>
+            <p>Add to cart</p>
+          </button>
           <div
             ref={selectProductQuantityRef}
             className="bg-red h-full hidden w-full rounded-xl items-center justify-between gap-1 text-rose-900 font-medium px-4">
