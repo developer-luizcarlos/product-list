@@ -35,10 +35,10 @@ export default function Home() {
   return (
     <div className="w-full h-full">
       <Container>
-        <main className="grid-templeate gap-9">
+        <main className="grid-templeate gap-0">
           <section className="w-100%">
             <h1 className="text-4xl font-bold mb-5">Desserts</h1>
-            <div className="columns-3 gap-0">
+            <div className="grid grid-cols-3 gap-0">
               {products.map((product) => {
                 return <Card
                   key={product.name}

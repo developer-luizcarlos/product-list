@@ -14,7 +14,6 @@ html {
 .grid-templeate {
   display: grid;
   grid-template-columns: 60% 40%;
-  grid-template-rows: 3;
 }
 
 .item-selected-border {
