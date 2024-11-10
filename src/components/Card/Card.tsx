@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useRef,useReducer,useContext } from "react";
+import { useRef,useReducer,useContext,useLayoutEffect } from "react";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { Context } from "@/context/Context";
 
@@ -36,13 +37,26 @@ function setQuantity(state: QuantityType,action: Action): QuantityType {
 
 
 export default function Card({ image,name,category,price }: Props) {
-  const { state,dispatch } = useContext(Context)!;
+  const { state,dispatch,itemExcluded } = useContext(Context)!;
 
   const [quantity,handleQuantity] = useReducer(setQuantity,initialQuantity);
 
   const addCartRef = useRef<HTMLButtonElement | null>(null);
   const selectProductQuantityRef = useRef<HTMLDivElement | null>(null);
   const cardImageRef = useRef<HTMLImageElement | null>(null);
+
+  useLayoutEffect(() => {
+    if(itemExcluded.item.trim()) {
+      if(itemExcluded.item === name) {
+        addCartRef.current!.style.display = "flex";
+        selectProductQuantityRef.current!.style.display = "none";
+        cardImageRef.current!.classList.remove("item-selected-border");
+        handleQuantity({ type: "RESET" });
+      }
+      console.log(itemExcluded.item);
+    }
+  },[itemExcluded]);
+
 
   function createNewItemOnCart(productName: string,productPrice: number) {
     dispatch({ type: "ADD",productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
