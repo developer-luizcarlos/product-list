@@ -19,3 +19,11 @@ html {
 .item-selected-border {
   border: 2px solid hsl(14, 86%, 42%);
 }
+
+@media screen and (max-width: 550px) {
+  .grid-templeate {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+  }
+}

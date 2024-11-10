@@ -13,7 +13,7 @@ export default function Cart() {
   const { state,totalAmount } = useContext(Context)!;
 
   return (
-    <article className="w-[350px] bg-rose-50 flex flex-col gap-4 p-4 rounded-md">
+    <article className="w-full md:w-[350px] bg-rose-50 flex flex-col gap-4 p-4 rounded-md">
       <div>
         <h1 className="text-xl text-red font-extrabold">Your Cart ({state.length})</h1>
       </div>
