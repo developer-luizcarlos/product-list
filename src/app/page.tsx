@@ -4,6 +4,7 @@ import { useEffect,useState } from "react";
 import Container from "@/components/Container/Container";
 import Card from "@/components/Card/Card";
 import Cart from "@/components/Cart/Cart";
+import ConfirmOrder from "@/components/ConfirmOrder/ConfirmOrder";
 import { StaticImageData } from "next/image";
 
 type ProductsType = {
@@ -54,6 +55,7 @@ export default function Home() {
           <aside>
             <Cart />
           </aside>
+          <ConfirmOrder />
         </main>
       </Container>
     </div>

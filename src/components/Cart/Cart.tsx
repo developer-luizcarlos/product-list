@@ -10,7 +10,7 @@ import { Context } from "@/context/Context";
 import ProductOnCart from "./ProductOnCart/ProductOnCart";
 
 export default function Cart() {
-  const { state,totalAmount } = useContext(Context)!;
+  const { state,totalAmount,setShowModal } = useContext(Context)!;
 
   return (
     <article className="w-full md:w-[350px] bg-rose-50 flex flex-col gap-4 p-4 rounded-md">
@@ -41,7 +41,9 @@ export default function Cart() {
           <img src="./assets/images/icon-carbon-neutral.svg" alt="" />
           <p className="text-sm text-rose-500">This is a <span className="text-rose-900 font-semibold">carbon-neutral</span> delivery</p>
         </div>
-        <button className="w-full h-10 p-2 flex items-center justify-center text-rose-100 text-base font-semibold capitalize bg-red rounded-2xl cursor-pointer">confirm order</button>
+        <button
+          onClick={() => setShowModal({ type: "SHOW" })}
+          className="w-full h-10 p-2 flex items-center justify-center text-rose-100 text-base font-semibold capitalize bg-red rounded-2xl cursor-pointer">confirm order</button>
       </div> :
         <div className="w-full flex flex-col items-center justify-center gap-3">
           <img src="./assets/images/illustration-empty-cart.svg" alt="icon your cart is empty" />
