@@ -5,7 +5,12 @@ import { Context } from "@/context/Context";
 import ProductOnCart from "../Cart/ProductOnCart/ProductOnCart";
 
 export default function ConfirmOrder() {
-  const { state,totalAmount,showModal,setShowModal } = useContext(Context)!;
+  const { state,dispatch,totalAmount,showModal,setShowModal } = useContext(Context)!;
+
+  function confirmOrder(): void {
+    dispatch({ type: "CLEAR" });
+    setShowModal({ type: "HIDE" });
+  }
 
   return (
     <article className={`${ (showModal.isShow) ? "w-screen h-screen block absolute top-0 left-0" : "hidden" }`}>
@@ -14,7 +19,7 @@ export default function ConfirmOrder() {
         className="w-full h-full bg-opacity-30 relative bg-neutral-600 block">
         <div
           onClick={(event) => event.stopPropagation()}
-          className="w-[460px] h-max bg-rose-50 p-6 rounded-lg flex flex-col gap-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          className="w-full md:w-[460px] h-4/5 md:h-max bg-rose-50 p-6 rounded-lg flex flex-col  gap-6 absolute bottom-0 md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-0 md:-translate-y-1/2">
           <img
             src="./assets/images/icon-order-confirmed.svg"
             alt="confirm icon"
@@ -44,6 +49,7 @@ export default function ConfirmOrder() {
             </div>
           </div>
           <button
+            onClick={() => confirmOrder()}
             className="w-full h-10 p-2 flex items-center justify-center text-rose-100 text-base font-semibold capitalize bg-red rounded-2xl cursor-pointer">Start new order</button>
         </div>
       </div>

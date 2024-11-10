@@ -30,13 +30,16 @@ type ProductAction =
   | {
     type: "DELETE",
     payload: string;
+  }
+  | {
+    type: "CLEAR";
   };
 
 type ModalAction = | { type: "SHOW"; } | { type: "HIDE"; };
 
 const initialProductsInCart: State[] = [];
 
-const initialModalState: ModalState = { isShow: true };
+const initialModalState: ModalState = { isShow: false };
 
 function setModalShow(state: ModalState,action: ModalAction) {
   switch(action.type) {
@@ -75,6 +78,8 @@ function reducer(state: State[],action: ProductAction): State[] {
       });
     case "DELETE":
       return state.filter(item => item.productName != action.payload);
+    case "CLEAR":
+      return [];
     default:
       return state;
   }
