@@ -4,6 +4,8 @@
 
 import { useRef,useReducer,useContext,useLayoutEffect } from "react";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
+import { FiMinus } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import { Context } from "@/context/Context";
 
 interface Props {
@@ -132,16 +134,16 @@ export default function Card({ image,name,category,price }: Props) {
             className="bg-red h-full hidden w-full rounded-xl items-center justify-between gap-1 text-rose-900 font-medium px-4">
             <button
               onClick={() => { decrementProductsQuantity(name,price); }}
-              className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer">
-              <img src="./assets/images/icon-decrement-quantity.svg" alt="" />
+              className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer duration-200 ease-out text-rose-100 hover:text-red hover:bg-rose-100">
+              <FiMinus />
             </button>
             <span className="text-rose-100">
               {quantity.count}
             </span>
             <button
               onClick={() => { incrementProductsQuantity(name,price); }}
-              className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer">
-              <img src="./assets/images/icon-increment-quantity.svg" alt="" />
+              className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer duration-200 ease-out text-rose-100 hover:text-red hover:bg-rose-100">
+              <FiPlus />
             </button>
           </div>
         </div>
