@@ -40,7 +40,11 @@ type ProductAction =
 
 type ModalAction = | { type: "SHOW"; } | { type: "HIDE"; };
 
-type ExcludedAction = { type: "EXCLUDE",payload: string; };
+type ExcludedAction =
+  |
+  { type: "EXCLUDE",payload: string; }
+  |
+  { type: "ERASEALL",payload: string; };
 
 type ContextType = {
   state: State[],
@@ -105,6 +109,10 @@ function setModalShow(state: ModalState,action: ModalAction) {
 function excludedReducer(state: ExcludedType,action: ExcludedAction) {
   switch(action.type) {
     case "EXCLUDE":
+      return {
+        item: action.payload,
+      };
+    case "ERASEALL":
       return {
         item: action.payload,
       };

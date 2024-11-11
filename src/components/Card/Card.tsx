@@ -53,7 +53,12 @@ export default function Card({ image,name,category,price }: Props) {
         cardImageRef.current!.classList.remove("item-selected-border");
         handleQuantity({ type: "RESET" });
       }
-      console.log(itemExcluded.item);
+      if(itemExcluded.item === "ERASED") {
+        addCartRef.current!.style.display = "flex";
+        selectProductQuantityRef.current!.style.display = "none";
+        cardImageRef.current!.classList.remove("item-selected-border");
+        handleQuantity({ type: "RESET" });
+      }
     }
   },[itemExcluded]);
 

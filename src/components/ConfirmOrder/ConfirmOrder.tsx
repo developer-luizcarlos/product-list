@@ -5,11 +5,12 @@ import { Context } from "@/context/Context";
 import ProductOnCart from "../Cart/ProductOnCart/ProductOnCart";
 
 export default function ConfirmOrder() {
-  const { state,dispatch,totalAmount,showModal,setShowModal } = useContext(Context)!;
+  const { state,dispatch,totalAmount,showModal,setShowModal,setItemExcluded } = useContext(Context)!;
 
   function confirmOrder(): void {
     dispatch({ type: "CLEAR" });
     setShowModal({ type: "HIDE" });
+    setItemExcluded({ type: "ERASEALL",payload: "ERASED" });
   }
 
   return (
