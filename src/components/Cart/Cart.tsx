@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import EmptyCart from "./EmptyCart/EmptyCart";
 
 /*
   This is the cart component, show all the cart informations, like the amount to be paid an the products that were inserted here.
@@ -45,10 +46,7 @@ export default function Cart() {
           onClick={() => setShowModal({ type: "SHOW" })}
           className="w-full h-10 p-2 flex items-center justify-center text-rose-100 text-base font-semibold capitalize bg-red rounded-2xl cursor-pointer">confirm order</button>
       </div> :
-        <div className="w-full flex flex-col items-center justify-center gap-3">
-          <img src="./assets/images/illustration-empty-cart.svg" alt="icon your cart is empty" />
-          <p className="text-sm text-rose-500 font-bold">Your added items will appear here</p>
-        </div>}
+        <EmptyCart />}
     </article>
   );
 }

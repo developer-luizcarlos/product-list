@@ -3,6 +3,7 @@
 import { useContext } from "react";
 import { Context } from "@/context/Context";
 import ProductOnCart from "../Cart/ProductOnCart/ProductOnCart";
+import EmptyCart from "../Cart/EmptyCart/EmptyCart";
 
 export default function ConfirmOrder() {
   const { state,dispatch,totalAmount,showModal,setShowModal,setItemExcluded } = useContext(Context)!;
@@ -32,7 +33,7 @@ export default function ConfirmOrder() {
           </div>
           <div className="bg-pink-50 rounded-md p-2 flex flex-col gap-2">
             <div className="overflow-hidden max-h-80 overflow-y-scroll scrollbar-custom w-full p-4">
-              <div className="w-full flex flex-col gap-1">
+              {state.length > 0 ? <div className="w-full flex flex-col gap-1">
                 {state.map((item) => {
                   return <ProductOnCart
                     key={item.productName}
@@ -43,7 +44,7 @@ export default function ConfirmOrder() {
                     productTotal={item.productPrice * item.productQuantity}
                   />;
                 })}
-              </div>
+              </div> : <EmptyCart />}
             </div>
             <div className="w-full flex items-center justify-between">
               <small className="text-rose-900 text-base font-medium capitalize">order total</small>
