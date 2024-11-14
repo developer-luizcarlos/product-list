@@ -20,7 +20,7 @@ export default function ConfirmOrder() {
         className="w-full h-full bg-opacity-30 relative bg-neutral-600 block">
         <div
           onClick={(event) => event.stopPropagation()}
-          className="w-full md:w-[460px] h-4/5 md:h-max bg-rose-50 p-6 rounded-lg flex flex-col  gap-6 absolute bottom-0 md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-0 md:-translate-y-1/2">
+          className="w-full md:w-[500px] h-[90%] md:h-max bg-rose-50 p-6 rounded-lg flex flex-col gap-7 absolute bottom-0 md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-0 md:-translate-y-1/2">
           <img
             src="./assets/images/icon-order-confirmed.svg"
             alt="confirm icon"
@@ -31,16 +31,18 @@ export default function ConfirmOrder() {
             <small className="text-rose-400 font-medium">We hope you enjoy your food</small>
           </div>
           <div className="bg-pink-50 rounded-md p-2 flex flex-col gap-2">
-            <div className="w-full flex flex-col gap-1">
-              {state.map((item) => {
-                return <ProductOnCart
-                  key={item.productName}
-                  productName={item.productName}
-                  productPrice={item.productPrice}
-                  productQuantity={item.productQuantity}
-                  productTotal={item.productPrice * item.productQuantity}
-                />;
-              })}
+            <div className="overflow-hidden max-h-80 overflow-y-scroll scrollbar-custom w-full p-4">
+              <div className="w-full flex flex-col gap-1">
+                {state.map((item) => {
+                  return <ProductOnCart
+                    key={item.productName}
+                    productName={item.productName}
+                    productPrice={item.productPrice}
+                    productQuantity={item.productQuantity}
+                    productTotal={item.productPrice * item.productQuantity}
+                  />;
+                })}
+              </div>
             </div>
             <div className="w-full flex items-center justify-between">
               <small className="text-rose-900 text-base font-medium capitalize">order total</small>
