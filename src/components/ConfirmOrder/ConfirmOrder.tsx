@@ -36,6 +36,7 @@ export default function ConfirmOrder() {
                 {state.map((item) => {
                   return <ProductOnCart
                     key={item.productName}
+                    productImage={item.productImage}
                     productName={item.productName}
                     productPrice={item.productPrice}
                     productQuantity={item.productQuantity}

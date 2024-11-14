@@ -1,4 +1,5 @@
 export type ProductState = {
+  productImage: string;
   productName: string;
   productQuantity: number;
   productPrice: number;
@@ -10,6 +11,7 @@ export type ProductAction =
   |
   {
     type: "ADD",
+    productImage: string,
     productName: string,
     productQuantity: number,
     productPrice: number,
@@ -39,6 +41,7 @@ class ProductClass {
         return [
           ...state,
           {
+            productImage: action.productImage,
             productName: action.productName,
             productQuantity: action.productQuantity,
             productPrice: action.productPrice,

@@ -11,6 +11,7 @@ import { Context } from "@/context/Context";
 interface Props {
   id: number;
   image: string;
+  mobileIMage: string;
   name: string;
   category: string;
   price: number;
@@ -38,7 +39,7 @@ function setQuantity(state: QuantityType,action: Action): QuantityType {
 };
 
 
-export default function Card({ image,name,category,price }: Props) {
+export default function Card({ image,mobileIMage,name,category,price }: Props) {
   const { state,dispatch,itemExcluded } = useContext(Context)!;
 
   const [quantity,handleQuantity] = useReducer(setQuantity,initialQuantity);
@@ -65,14 +66,14 @@ export default function Card({ image,name,category,price }: Props) {
   },[itemExcluded]);
 
 
-  function createNewItemOnCart(productName: string,productPrice: number) {
-    dispatch({ type: "ADD",productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
+  function createNewItemOnCart(productImage: string,productName: string,productPrice: number) {
+    dispatch({ type: "ADD",productImage: mobileIMage,productName: productName,productPrice: productPrice,productQuantity: quantity.count,productTotal: (productPrice * quantity.count) });
   }
 
-  function addProductsToCart(productName: string,productPrice: number) {
+  function addProductsToCart(productImage: string,productName: string,productPrice: number) {
     const productAlreadyExistOnCart = state.find(item => item.productName === productName);
     if(!productAlreadyExistOnCart) {
-      createNewItemOnCart(productName,productPrice);
+      createNewItemOnCart(mobileIMage,productName,productPrice);
     }
     // hide the add button and show the component to select how many items will be insert in the cart
     addCartRef.current!.style.display = "none";
@@ -81,22 +82,22 @@ export default function Card({ image,name,category,price }: Props) {
     handleQuantity({ type: "RESET" });
   };
 
-  function changeProductsQuantity(actionType: Action['type'],productName: string,productPrice: number) {
+  function changeProductsQuantity(actionType: Action['type'],productImage: string,productName: string,productPrice: number) {
     const productAlreadyExistOnCart = state.find(item => item.productName === productName);
     if(!productAlreadyExistOnCart) {
-      createNewItemOnCart(productName,productPrice);
+      createNewItemOnCart(mobileIMage,productName,productPrice);
     } else {
       handleQuantity({ type: actionType });
       dispatch({ type: "EDIT",name: productName,newQuantity: quantity.count + 1,price: price });
     }
   }
 
-  function incrementProductsQuantity(productName: string,productPrice: number) {
-    changeProductsQuantity("INCREMENT",productName,productPrice);
+  function incrementProductsQuantity(productImage: string,productName: string,productPrice: number) {
+    changeProductsQuantity("INCREMENT",mobileIMage,productName,productPrice);
   };
 
-  function decrementProductsQuantity(productName: string,productPrice: number) {
-    changeProductsQuantity("DECREMENT",productName,productPrice);
+  function decrementProductsQuantity(productImage: string,productName: string,productPrice: number) {
+    changeProductsQuantity("DECREMENT",mobileIMage,productName,productPrice);
     if(quantity.count > 1) {
       dispatch({ type: "EDIT",name: productName,newQuantity: quantity.count - 1,price: price });
     } else {
@@ -120,7 +121,7 @@ export default function Card({ image,name,category,price }: Props) {
           <button
             ref={addCartRef}
             onClick={() => {
-              addProductsToCart(name,price);
+              addProductsToCart(image,name,price);
             }}
             className="bg-rose-100 h-full w-full rounded-xl flex items-center justify-center gap-1 border-rose-300 border-[1px] text-rose-900 font-medium cursor-pointer"
           >
@@ -133,7 +134,7 @@ export default function Card({ image,name,category,price }: Props) {
             ref={selectProductQuantityRef}
             className="bg-red h-full hidden w-full rounded-xl items-center justify-between gap-1 text-rose-900 font-medium px-4">
             <button
-              onClick={() => { decrementProductsQuantity(name,price); }}
+              onClick={() => { decrementProductsQuantity(image,name,price); }}
               className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer duration-200 ease-out text-rose-100 hover:text-red hover:bg-rose-100">
               <FiMinus />
             </button>
@@ -141,7 +142,7 @@ export default function Card({ image,name,category,price }: Props) {
               {quantity.count}
             </span>
             <button
-              onClick={() => { incrementProductsQuantity(name,price); }}
+              onClick={() => { incrementProductsQuantity(image,name,price); }}
               className="w-5 h-5 flex items-center justify-center rounded-full border-rose-100 border-[1px] cursor-pointer duration-200 ease-out text-rose-100 hover:text-red hover:bg-rose-100">
               <FiPlus />
             </button>

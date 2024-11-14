@@ -21,7 +21,8 @@ html {
 }
 
 .scrollbar-custom {
-  overflow-y: scroll; /* Ensure the scrollbar is visible for demonstration */
+  overflow-y: scroll;
+  /* Ensure the scrollbar is visible for demonstration */
 }
 
 .scrollbar-custom::-webkit-scrollbar {
@@ -42,6 +43,12 @@ html {
 
 .scrollbar-custom::-webkit-scrollbar-thumb:hover {
   background-color: #8d8c8c;
+}
+
+.text-wrapper {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 550px) {

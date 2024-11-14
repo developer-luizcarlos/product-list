@@ -9,7 +9,8 @@ import { StaticImageData } from "next/image";
 
 type ProductsType = {
   id: number;
-  image: { desktop: StaticImageData; };
+  image: { desktop: StaticImageData,mobile: StaticImageData; };
+  mobileImage: { mobile: StaticImageData; };
   name: string;
   category: string;
   price: string;
@@ -45,6 +46,7 @@ export default function Home() {
                   key={product.name}
                   id={product.id}
                   image={(product.image.desktop).toString()}
+                  mobileIMage={(product.image.mobile).toString()}
                   name={product.name}
                   category={product.category}
                   price={Number(product.price)}
